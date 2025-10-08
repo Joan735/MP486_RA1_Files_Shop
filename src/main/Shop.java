@@ -17,6 +17,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import dao.DaoImplFile;
+
 public class Shop {
 	private Amount cash = new Amount(100.00);
 //	private Product[] inventory;
@@ -27,6 +29,8 @@ public class Shop {
 	private int numberSales;
 
 	final static double TAX_RATE = 1.04;
+	
+	private DaoImplFile dao = new DaoImplFile();
 
 	public Shop() {
 		inventory = new ArrayList<Product>();
@@ -213,6 +217,10 @@ public class Shop {
 	 * read inventory from file
 	 */
 	private void readInventory() {
+		
+		inventory = this.dao.getInventory();
+		
+		/*
 		// locate file, path and name
 		File f = new File(System.getProperty("user.dir") + File.separator + "files/inputInventory.txt");
 		
@@ -276,6 +284,11 @@ public class Shop {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
+	}
+	
+	public boolean writeInventory() {
+		return dao.writeInventory(inventory);
 	}
 
 	/**
