@@ -32,6 +32,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	private JButton btnAddProduct;
 	private JButton btnAddStock;
 	private JButton btnRemoveProduct;
+	private JButton btnShowProducts;
 
 	public Shop getShop() {
 		return shop;
@@ -128,6 +129,15 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		contentPane.add(btnRemoveProduct);
 		// listen button
 		btnRemoveProduct.addActionListener(this);
+		
+		// option show products
+		btnShowProducts = new JButton("10. Show products");
+		btnShowProducts.setHorizontalAlignment(SwingConstants.LEFT);
+		btnShowProducts.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnShowProducts.setBounds(99, 290, 236, 40);
+		contentPane.add(btnShowProducts);
+		// listen button
+		btnShowProducts.addActionListener(this);
 	}
 
 	@Override
@@ -160,7 +170,6 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		if (e.getKeyChar() == '9') {
 			this.openProductView(Constants.OPTION_REMOVE_PRODUCT);
 		}
-
 	}
 
 	@Override
@@ -192,6 +201,9 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		}
 		if (e.getSource() == btnRemoveProduct) {
 			this.openProductView(Constants.OPTION_REMOVE_PRODUCT);
+		}
+		if (e.getSource() == btnShowProducts) {
+			this.openProductView(Constants.OPTION_SHOW_PRODUCTS);
 		}
 
 	}

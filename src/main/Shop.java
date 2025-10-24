@@ -211,6 +211,7 @@ public class Shop {
 //		addProduct(new Product("Fresa", new Amount(5.00), true, 20));
 		// now read from file
 		this.readInventory();
+		setNumberProducts(inventory.size());
 	}
 
 	/**
@@ -557,6 +558,11 @@ public class Shop {
 		}
 		inventory.add(product);
 		numberProducts++;
+	}
+	
+	public void removeProduct(Product product) {
+		inventory.remove(product);
+		numberProducts--;
 	}
 	
 	
