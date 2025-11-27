@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import dao.DaoImplFile;
+import dao.DaoImplJDBC;
 
 public class Shop {
 	private Amount cash = new Amount(100.00);
@@ -30,7 +31,7 @@ public class Shop {
 
 	final static double TAX_RATE = 1.04;
 	
-	private DaoImplFile dao = new DaoImplFile();
+	private DaoImplJDBC dao = new DaoImplJDBC();
 
 	public Shop() {
 		inventory = new ArrayList<Product>();
@@ -218,9 +219,7 @@ public class Shop {
 	 * read inventory from file
 	 */
 	private void readInventory() {
-		
 		inventory = this.dao.getInventory();
-		
 		/*
 		// locate file, path and name
 		File f = new File(System.getProperty("user.dir") + File.separator + "files/inputInventory.txt");
@@ -557,15 +556,25 @@ public class Shop {
 			return;
 		}
 		inventory.add(product);
+		dao.addProduct(product);
 		numberProducts++;
 	}
 	
+	/**
+	 * removes the product from the inventory
+	 */
 	public void removeProduct(Product product) {
 		inventory.remove(product);
+		dao.deleteProduct(product.getId());
 		numberProducts--;
 	}
 	
-	
+	/**
+	 * updates the stock with the new value
+	 */
+	public void addStock(Product product) {
+		dao.updateProduct(product);
+	}
 
 	/**
 	 * check if inventory is full or not
@@ -576,7 +585,6 @@ public class Shop {
 		} else {
 			return false;
 		}
-
 	}
 
 	/**
@@ -591,7 +599,5 @@ public class Shop {
 			}
 		}
 		return null;
-
 	}
-
 }

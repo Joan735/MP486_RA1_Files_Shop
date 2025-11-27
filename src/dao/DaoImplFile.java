@@ -16,17 +16,12 @@ import model.Employee;
 import model.Product;
 
 public class DaoImplFile implements Dao {
-
+	
+	@Override
 	public void connect() {
 	}
 
-	public void disconnect() {
-	}
-
-	public Employee getEmployee(int employeeId, String password) {
-		return null;
-	}
-
+	@Override
 	public ArrayList<Product> getInventory() {
 		// locate file, path and name
 		File f = new File(System.getProperty("user.dir") + File.separator + "files/inputInventory.txt");
@@ -97,14 +92,14 @@ public class DaoImplFile implements Dao {
 		return products;
 	}
 
+	@Override
 	public boolean writeInventory(ArrayList<Product> inventory) {
 
 		LocalDateTime date = LocalDateTime.now();
 		DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String formattedDate = date.format(myFormatObj);
 
-		File f = new File(
-				System.getProperty("user.dir") + File.separator + "files/inventory_" + formattedDate + ".txt");
+		File f = new File(System.getProperty("user.dir") + File.separator + "file/inventory_" + formattedDate + ".txt");
 
 		try {
 			if (!f.exists()) {
@@ -136,5 +131,26 @@ public class DaoImplFile implements Dao {
 		}
 
 		return true;
+	}
+	
+	@Override
+	public Employee getEmployee(int employeeId, String password) {
+		return null;
+	}
+	
+	@Override
+	public void addProduct(Product product) {
+	}
+
+	@Override
+	public void updateProduct(Product product) {
+	}
+
+	@Override
+	public void deleteProduct(int productId) {
+	}
+
+	@Override
+	public void disconnect() {
 	}
 }

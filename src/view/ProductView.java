@@ -16,7 +16,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
 
 import main.Shop;
 import model.Product;
@@ -81,7 +80,7 @@ public class ProductView extends JDialog implements ActionListener {
 		// name section
 		JLabel lblName = new JLabel("Nombre producto:");
 		lblName.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblName.setBounds(33, 10, 119, 19);
+		lblName.setBounds(33, 10, 124, 19);
 		contentPanel.add(lblName);
 		textFieldName = new JTextField();
 		textFieldName.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -142,7 +141,7 @@ public class ProductView extends JDialog implements ActionListener {
 		Object[][] data = new Object[shop.getNumberProducts()][5];
 		int counter = 0;
 		for (Product product : shop.getInventory()) {
-			data[counter] = new Object[] { counter + 1, product.getName(), product.getPublicPrice(),
+			data[counter] = new Object[] { product.getId(), product.getName(), product.getPublicPrice(),
 					product.isAvailable(), product.getStock() };
 			counter++;
 		}
@@ -198,7 +197,6 @@ public class ProductView extends JDialog implements ActionListener {
 
 				if (product != null) {
 					JOptionPane.showMessageDialog(null, "Producto ya existe ", "Error", JOptionPane.ERROR_MESSAGE);
-
 				} else {
 					product = new Product(textFieldName.getText(),
 							new Amount(Double.parseDouble(textFieldPrice.getText())), true,
@@ -209,7 +207,6 @@ public class ProductView extends JDialog implements ActionListener {
 					// release current screen
 					dispose();
 				}
-
 				break;
 
 			case Constants.OPTION_ADD_STOCK:
@@ -218,15 +215,14 @@ public class ProductView extends JDialog implements ActionListener {
 
 				if (product == null) {
 					JOptionPane.showMessageDialog(null, "Producto no existe ", "Error", JOptionPane.ERROR_MESSAGE);
-
 				} else {
 					product.setStock(product.getStock() + Integer.parseInt(textFieldStock.getText()));
 					JOptionPane.showMessageDialog(null, "Stock actualizado ", "Information",
 							JOptionPane.INFORMATION_MESSAGE);
+					shop.addStock(product);
 					// release current screen
 					dispose();
 				}
-
 				break;
 
 			case Constants.OPTION_REMOVE_PRODUCT:
@@ -235,7 +231,6 @@ public class ProductView extends JDialog implements ActionListener {
 
 				if (product == null) {
 					JOptionPane.showMessageDialog(null, "Producto no existe ", "Error", JOptionPane.ERROR_MESSAGE);
-
 				} else {
 					shop.removeProduct(product);
 					JOptionPane.showMessageDialog(null, "Producto eliminado", "Information",
@@ -243,7 +238,6 @@ public class ProductView extends JDialog implements ActionListener {
 					// release current screen
 					dispose();
 				}
-
 				break;
 
 			default:
