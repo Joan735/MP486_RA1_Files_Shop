@@ -17,7 +17,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import dao.Dao;
 import dao.DaoImplFile;
+import dao.DaoImplHibernate;
 import dao.DaoImplJDBC;
 
 public class Shop {
@@ -30,82 +32,60 @@ public class Shop {
 	private int numberSales;
 
 	final static double TAX_RATE = 1.04;
-	
-	private DaoImplJDBC dao = new DaoImplJDBC();
+
+	private Dao dao = new DaoImplHibernate();
 
 	public Shop() {
 		inventory = new ArrayList<Product>();
 		sales = new ArrayList<Sale>();
 	}
-	
-	
 
 	public Amount getCash() {
 		return cash;
 	}
 
-
-
 	public void setCash(Amount cash) {
 		this.cash = cash;
 	}
-
-
 
 	public ArrayList<Product> getInventory() {
 		return inventory;
 	}
 
-
-
 	public void setInventory(ArrayList<Product> inventory) {
 		this.inventory = inventory;
 	}
-
-
 
 	public int getNumberProducts() {
 		return numberProducts;
 	}
 
-
-
 	public void setNumberProducts(int numberProducts) {
 		this.numberProducts = numberProducts;
 	}
-
-
 
 	public ArrayList<Sale> getSales() {
 		return sales;
 	}
 
-
-
 	public void setSales(ArrayList<Sale> sales) {
 		this.sales = sales;
 	}
-
-
 
 	public int getNumberSales() {
 		return numberSales;
 	}
 
-
-
 	public void setNumberSales(int numberSales) {
 		this.numberSales = numberSales;
 	}
-
-
 
 	public static void main(String[] args) {
 		Shop shop = new Shop();
 
 		// load inventory from external data
 		shop.loadInventory();
-		
+
 		// init session as employee
 		shop.initSession();
 
@@ -180,18 +160,18 @@ public class Shop {
 
 	private void initSession() {
 		// TODO Auto-generated method stub
-		
+
 		Employee employee = new Employee("test");
-		boolean logged=false;
-		
+		boolean logged = false;
+
 		do {
 			Scanner scanner = new Scanner(System.in);
 			System.out.println("Introduzca numero de empleado: ");
 			int employeeId = scanner.nextInt();
-			
+
 			System.out.println("Introduzca contraseña: ");
 			String password = scanner.next();
-			
+
 			logged = employee.login(employeeId, password);
 			if (logged) {
 				System.out.println("Login correcto ");
@@ -199,7 +179,7 @@ public class Shop {
 				System.out.println("Usuario o password incorrectos ");
 			}
 		} while (!logged);
-				
+
 	}
 
 	/**
@@ -221,72 +201,42 @@ public class Shop {
 	private void readInventory() {
 		inventory = this.dao.getInventory();
 		/*
-		// locate file, path and name
-		File f = new File(System.getProperty("user.dir") + File.separator + "files/inputInventory.txt");
-		
-		try {			
-			// wrap in proper classes
-			FileReader fr;
-			fr = new FileReader(f);				
-			BufferedReader br = new BufferedReader(fr);
-			
-			// read first line
-			String line = br.readLine();
-			
-			// process and read next line until end of file
-			while (line != null) {
-				// split in sections
-				String[] sections = line.split(";");
-				
-				String name = "";
-				double wholesalerPrice=0.0;
-				int stock = 0;
-				
-				// read each sections
-				for (int i = 0; i < sections.length; i++) {
-					// split data in key(0) and value(1) 
-					String[] data = sections[i].split(":");
-					
-					switch (i) {
-					case 0:
-						// format product name
-						name = data[1];
-						break;
-						
-					case 1:
-						// format price
-						wholesalerPrice = Double.parseDouble(data[1]);
-						break;
-						
-					case 2:
-						// format stock
-						stock = Integer.parseInt(data[1]);
-						break;
-						
-					default:
-						break;
-					}
-				}
-				// add product to inventory
-				addProduct(new Product(name, new Amount(wholesalerPrice), true, stock));
-				
-				// read next line
-				line = br.readLine();
-			}
-			fr.close();
-			br.close();
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
+		 * // locate file, path and name File f = new
+		 * File(System.getProperty("user.dir") + File.separator +
+		 * "files/inputInventory.txt");
+		 * 
+		 * try { // wrap in proper classes FileReader fr; fr = new FileReader(f);
+		 * BufferedReader br = new BufferedReader(fr);
+		 * 
+		 * // read first line String line = br.readLine();
+		 * 
+		 * // process and read next line until end of file while (line != null) { //
+		 * split in sections String[] sections = line.split(";");
+		 * 
+		 * String name = ""; double wholesalerPrice=0.0; int stock = 0;
+		 * 
+		 * // read each sections for (int i = 0; i < sections.length; i++) { // split
+		 * data in key(0) and value(1) String[] data = sections[i].split(":");
+		 * 
+		 * switch (i) { case 0: // format product name name = data[1]; break;
+		 * 
+		 * case 1: // format price wholesalerPrice = Double.parseDouble(data[1]); break;
+		 * 
+		 * case 2: // format stock stock = Integer.parseInt(data[1]); break;
+		 * 
+		 * default: break; } } // add product to inventory addProduct(new Product(name,
+		 * new Amount(wholesalerPrice), true, stock));
+		 * 
+		 * // read next line line = br.readLine(); } fr.close(); br.close();
+		 * 
+		 * } catch (FileNotFoundException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace();
+		 * 
+		 * } catch (IOException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); }
+		 */
 	}
-	
+
 	public boolean writeInventory() {
 		return dao.writeInventory(inventory);
 	}
@@ -441,10 +391,11 @@ public class Shop {
 		totalAmount.setValue(totalAmount.getValue() * TAX_RATE);
 		// show cost total
 		System.out.println("Venta realizada con éxito, total: " + totalAmount);
-		
+
 		// make payment
-		if(!client.pay(totalAmount)) {
-			System.out.println("Cliente debe: " + client.getBalance());;
+		if (!client.pay(totalAmount)) {
+			System.out.println("Cliente debe: " + client.getBalance());
+			;
 		}
 
 		// create sale
@@ -468,15 +419,15 @@ public class Shop {
 				System.out.println(sale);
 			}
 		}
-		
+
 		// ask for client name
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Exportar fichero ventas? S / N");
 		String option = sc.nextLine();
 		if ("S".equalsIgnoreCase(option)) {
 			this.writeSales();
-		} 
-		
+		}
+
 	}
 
 	/**
@@ -486,49 +437,51 @@ public class Shop {
 		// define file name based on date
 		LocalDate myObj = LocalDate.now();
 		String fileName = "sales_" + myObj.toString() + ".txt";
-		
+
 		// locate file, path and name
 		File f = new File(System.getProperty("user.dir") + File.separator + "files" + File.separator + fileName);
-				
+
 		try {
 			// wrap in proper classes
 			FileWriter fw;
 			fw = new FileWriter(f, true);
 			PrintWriter pw = new PrintWriter(fw);
-			
+
 			// write line by line
-			int counterSale=1;
-			for (Sale sale : sales) {				
+			int counterSale = 1;
+			for (Sale sale : sales) {
 				// format first line TO BE -> 1;Client=PERE;Date=29-02-2024 12:49:50;
-				StringBuilder firstLine = new StringBuilder(counterSale+";Client="+sale.getClient()+";Date=" + sale.formatDate()+";");
+				StringBuilder firstLine = new StringBuilder(
+						counterSale + ";Client=" + sale.getClient() + ";Date=" + sale.formatDate() + ";");
 				pw.write(firstLine.toString());
 				fw.write("\n");
-				
-				// format second line TO BE -> 1;Products=Manzana,20.0€;Fresa,10.0€;Hamburguesa,60.0€;
+
+				// format second line TO BE ->
+				// 1;Products=Manzana,20.0€;Fresa,10.0€;Hamburguesa,60.0€;
 				// build products line
-				StringBuilder productLine= new StringBuilder();
+				StringBuilder productLine = new StringBuilder();
 				for (Product product : sale.getProducts()) {
-					productLine.append(product.getName()+ "," + product.getPublicPrice()+";");
+					productLine.append(product.getName() + "," + product.getPublicPrice() + ";");
 				}
-				StringBuilder secondLine = new StringBuilder(counterSale+ ";" + "Products=" + productLine +";");						                                                
-				pw.write(secondLine.toString());	
+				StringBuilder secondLine = new StringBuilder(counterSale + ";" + "Products=" + productLine + ";");
+				pw.write(secondLine.toString());
 				fw.write("\n");
-				
+
 				// format third line TO BE -> 1;Amount=93.60€;
-				StringBuilder thirdLine = new StringBuilder(counterSale+ ";" + "Amount=" + sale.getAmount() +";");						                                                
-				pw.write(thirdLine.toString());	
+				StringBuilder thirdLine = new StringBuilder(counterSale + ";" + "Amount=" + sale.getAmount() + ";");
+				pw.write(thirdLine.toString());
 				fw.write("\n");
-				
+
 				// increment counter sales
 				counterSale++;
 			}
 			// close files
 			pw.close();
 			fw.close();
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 
 	/**
@@ -559,7 +512,7 @@ public class Shop {
 		dao.addProduct(product);
 		numberProducts++;
 	}
-	
+
 	/**
 	 * removes the product from the inventory
 	 */
@@ -568,7 +521,7 @@ public class Shop {
 		dao.deleteProduct(product.getId());
 		numberProducts--;
 	}
-	
+
 	/**
 	 * updates the stock with the new value
 	 */

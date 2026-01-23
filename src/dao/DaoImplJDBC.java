@@ -92,7 +92,7 @@ public class DaoImplJDBC implements Dao {
 	public Employee getEmployee(int employeeId, String password) {
 		Employee employee = null;
 		String query = "select * from employee where employeeId= ? and password = ? ";
-
+		this.connect();
 		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
 			pstmt.setInt(1, employeeId);
 			pstmt.setString(2, password);
@@ -105,6 +105,8 @@ public class DaoImplJDBC implements Dao {
 		} catch (SQLException e) {
 			// in case error in SQL
 			e.printStackTrace();
+		} finally {
+			this.disconnect();
 		}
 		return employee;
 	}

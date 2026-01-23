@@ -12,7 +12,6 @@ import utils.Constants;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -129,7 +128,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		contentPane.add(btnRemoveProduct);
 		// listen button
 		btnRemoveProduct.addActionListener(this);
-		
+
 		// option show products
 		btnShowProducts = new JButton("10. Show products");
 		btnShowProducts.setHorizontalAlignment(SwingConstants.LEFT);

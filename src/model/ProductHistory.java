@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,12 +11,14 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "inventory")
-public class Product {
+@Table(name = "historical_inventory")
+public class ProductHistory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", unique = true, nullable = true)
 	private int id;
+	@Column(name = "id_product")
+	private int idProduct;
 	@Column
 	private String name;
 	@Transient
@@ -27,37 +31,47 @@ public class Product {
 	private boolean available;
 	@Column
 	private int stock;
+	@Column(name = "created_at")
+	private Date createdAt;
 	@Transient
 	private static int totalProducts;
-	@Transient
+
 	public final static double EXPIRATION_RATE = 0.60;
 
-	public Product() {
-		this.wholesalerPrice = new Amount(this.price);
-		this.publicPrice = new Amount(this.wholesalerPrice.getValue() * 2);		
+	public ProductHistory() {
+		this.createdAt = new Date();
+	}
+	
+	public ProductHistory(Product product) {
+		this.idProduct = product.getId();
+		this.name = product.getName();
+		this.price = product.getPrice();
+		this.available = product.isAvailable();
+		this.stock = product.getStock();
+		this.createdAt = new Date();
 	}
 
-	public Product(String name, Amount wholesalerPrice, boolean available, int stock) {
+	public ProductHistory(String name, Amount wholesalerPrice, boolean available, int stock) {
 		super();
 		totalProducts++;
 		this.id = totalProducts;
 		this.name = name;
 		this.wholesalerPrice = wholesalerPrice;
 		this.publicPrice = new Amount(wholesalerPrice.getValue() * 2);
-		this.price = publicPrice.getValue();
 		this.available = available;
 		this.stock = stock;
+		this.createdAt = new Date();
 	}
 
-	public Product(int id, String name, Amount wholesalerPrice, boolean available, int stock) {
+	public ProductHistory(int id, String name, Amount wholesalerPrice, boolean available, int stock) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.wholesalerPrice = wholesalerPrice;
 		this.publicPrice = new Amount(wholesalerPrice.getValue() * 2);
-		this.price = publicPrice.getValue();
 		this.available = available;
 		this.stock = stock;
+		this.createdAt = new Date();
 	}
 
 	public int getId() {
@@ -92,14 +106,6 @@ public class Product {
 		this.wholesalerPrice = wholesalerPrice;
 	}
 
-	public double getPrice() {
-		return price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
 	public boolean isAvailable() {
 		return available;
 	}
@@ -121,7 +127,31 @@ public class Product {
 	}
 
 	public static void setTotalProducts(int totalProducts) {
-		Product.totalProducts = totalProducts;
+		ProductHistory.totalProducts = totalProducts;
+	}
+
+	public int getIdProduct() {
+		return idProduct;
+	}
+
+	public void setIdProduct(int idProduct) {
+		this.idProduct = idProduct;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	public void expire() {
@@ -131,7 +161,7 @@ public class Product {
 
 	@Override
 	public String toString() {
-		return "Product [id= " + id + " name=" + name + ", publicPrice=" + publicPrice + ", wholesalerPrice="
-				+ wholesalerPrice + ", price" + price + ", available=" + available + ", stock=" + stock + "]";
+		return "Product [name=" + name + ", publicPrice=" + publicPrice + ", wholesalerPrice=" + wholesalerPrice
+				+ ", available=" + available + ", stock=" + stock + "]";
 	}
 }
