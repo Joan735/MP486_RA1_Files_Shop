@@ -35,6 +35,9 @@ public class DaoImplHibernate implements Dao {
 		ArrayList<Product> products = new ArrayList<>();
 		try {
 			products = new ArrayList<>(session.createQuery("FROM Product", Product.class).getResultList());
+			for (Product product: products) {
+				Product.updatePrices(product);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

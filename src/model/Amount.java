@@ -12,6 +12,12 @@ public class Amount {
 		super();
 		this.value = value;
 	}
+	
+	public Amount(double value, String currency) {
+		super();
+		this.value = value;
+		this.currency = currency;
+	}
 
 	public double getValue() {
 		return value;
@@ -19,6 +25,14 @@ public class Amount {
 
 	public void setValue(double value) {
 		this.value = value;
+	}
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
 	}
 
 	@Override

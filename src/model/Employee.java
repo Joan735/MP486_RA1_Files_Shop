@@ -22,7 +22,7 @@ public class Employee extends Person implements Logable{
 	private String password;
 	// connection using JDBC SQL
 	@Transient
-	private Dao dao = new DaoImplHibernate();
+	private Dao dao = new DaoImplMongoDB();
 	
 //	public static final int USER = 123;
 //	public static final String PASSWORD = "test";
@@ -34,6 +34,7 @@ public class Employee extends Person implements Logable{
 	public Employee(int employeeId, String name, String password) {
 		super(name);
 		this.employeeId = employeeId;
+		this.name = name;
 		this.password = password;
 	}
 	

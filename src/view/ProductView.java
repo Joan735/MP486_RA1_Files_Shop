@@ -141,7 +141,7 @@ public class ProductView extends JDialog implements ActionListener {
 		Object[][] data = new Object[shop.getNumberProducts()][5];
 		int counter = 0;
 		for (Product product : shop.getInventory()) {
-			data[counter] = new Object[] { product.getId(), product.getName(), product.getPrice()*2,
+			data[counter] = new Object[] { product.getId(), product.getName(), product.getPublicPrice(),
 					product.isAvailable(), product.getStock() };
 			counter++;
 		}
