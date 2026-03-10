@@ -139,7 +139,7 @@ public class DaoImplMongoDB implements Dao {
 	public void deleteProduct(int productId) {
 		this.connect();
 		collection = mongoDatabase.getCollection(COLLECTION_INVENTORY);
-		collection.deleteMany(eq("id", productId));
+		collection.deleteOne(eq("id", productId));
 	}
 
 	@Override
