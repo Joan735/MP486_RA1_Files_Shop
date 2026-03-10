@@ -78,7 +78,7 @@ public class DaoImplMongoDB implements Dao {
 	public boolean writeInventory(ArrayList<Product> inventory) {
 		try {
 	        this.connect();
-	        collection = mongoDatabase.getCollection("");
+	        collection = mongoDatabase.getCollection(COLLECTION_INVENTORY);
 	        for (Product product : inventory) {
 	            Document wholesalerPriceDoc = new Document("value", product.getWholesalerPrice().getValue())
 	                    .append("currency", product.getWholesalerPrice().getCurrency());
