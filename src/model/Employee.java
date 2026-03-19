@@ -11,18 +11,18 @@ import javax.persistence.Transient;
 import dao.*;
 
 @Entity
-@Table(name = "employee")
+// @Table(name = "employee")
 public class Employee extends Person implements Logable{
 	@Id
-	@Column(name = "employeeId", unique = true, nullable = true)
+	// @Column(name = "employeeId", unique = true, nullable = true)
 	private int employeeId;
-	@Column
+	// @Column
 	private String name;
-	@Column
+	// @Column
 	private String password;
 	// connection using JDBC SQL
 	@Transient
-	private Dao dao = new DaoImplMongoDB();
+	private Dao dao = new DaoImplObjectDB();
 	
 //	public static final int USER = 123;
 //	public static final String PASSWORD = "test";
